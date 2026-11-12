@@ -347,7 +347,8 @@ error: required option '-c, --cheese <type>' not specified
 ```js
 program
   .option('-n, --number <numbers...>', 'specify numbers')
-  .option('-l, --letter [letters...]', 'specify letters');
+  .option('-l, --letter [letters...]', 'specify letters')
+  .argument('[operand]');
 
 program.parse();
 
@@ -360,10 +361,10 @@ $ collect -n 1 2 3 --letter a b c
 Options:  { number: [ '1', '2', '3' ], letter: [ 'a', 'b', 'c' ] }
 Remaining arguments:  []
 $ collect --letter=A -n80 operand
-Options:  { number: [ '80' ], letter: [ 'A' ] }
+Options:  { letter: [ 'A' ], number: [ '80' ] }
 Remaining arguments:  [ 'operand' ]
 $ collect --letter -n 1 -n 2 3 -- operand
-Options:  { number: [ '1', '2', '3' ], letter: true }
+Options:  { letter: true, number: [ '1', '2', '3' ] }
 Remaining arguments:  [ 'operand' ]
 ```
 
@@ -626,7 +627,7 @@ program
 program
   .command('serve')
   .argument('<script>')
-  .option('-p, --port <number>', 'port number', 80)
+  .option('-p, --port <number>', 'port number', '80')
   .action(function() {
     console.error('Run script %s on port %s', this.args[0], this.opts().port);
   });
